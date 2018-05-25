@@ -1,0 +1,26 @@
+﻿body {
+}
+.sidenav {
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    top: 6.5%;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    z-index : 1;
+    padding-top : 20px;
+}
+
+.sidenav a {
+    padding : 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size:25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+    background-color: #818181;
+}
