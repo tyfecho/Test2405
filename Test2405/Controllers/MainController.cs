@@ -17,7 +17,11 @@ namespace Test2405.Controllers
         {
             return View();
         }
-        public IActionResult Application()
+        public IActionResult ApplicationSettings()
+        {
+            return View();
+        }
+        public IActionResult ApplicationUpdates()
         {
             return View();
         }
