@@ -7,128 +7,130 @@
 
 </br>
 
-<table>
-    <tr>
-        <td align="left">
-            <b> Maintenance </b>
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Maintenance Mode (Admin)
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="maintenancemode" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Next Scheduled Down Time
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <b>Start:</b><input type="date" id="downtimeStart" />
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <b>End:</b><input type="date" id="downtimeEnd" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />
-            <b> App Configurations </b>
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable Content Feedback
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="contentfeedback" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable Content Rating
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="contentrating" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable CRM Sign Up
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="crmsignup" />
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <b>CRM Email:</b><input type="text" placeholder="CRM Email" id="crmsignup2" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable On-Site Content
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="onsitecontent" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable Help URL
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="helpurl" />
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <b>FAQ URL:</b><input type="text" style="width:350px;" placeholder="FAQ URL (Open in In-App browser)" id="helpurl2" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />Enable Usage Data Collections
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="radio" id="usagedatacollections" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />
-            <b>API KEY #1:</b>
-        </td>
-        <td align="left" style="padding-left:50px;">
-            <br />
-            <input type="text" placeholder="API KEY #1" id="apikey1" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />
-            <b>API KEY #2:</b>
-        </td>
-        <td align="left" style="padding-left:50px;">
-            <br />
-            <input type="text" placeholder="API KEY #2" id="apikey2" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />
-            <b>GCM CONFIG : </b>
-        <td align="left" style="padding-left:50px;">
-            <br />
-            <input type="text" placeholder="GCM CONFIG" id="gcmconfig" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br />
-            <b>APNS CONFIG : </b>
-        <td align="left" style="padding-left:50px;">
-            <br />
-            <input type="text" placeholder="APNS CONFIG" id="apnsconfig" />
-        </td>
-    </tr>
+<form method="post">
+    <table>
+        <tr>
+            <td align="left">
+                <b> Maintenance </b>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Maintenance Mode (Admin)
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="maintenancemode" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Next Scheduled Down Time
+            </td>
+            <td align="left" class="tablealign">
+                <b>Start:</b><input type="date" id="downtimeStart" />
+            </td>
+            <td align="left" class="tablealign">
+                <b>End:</b><input type="date" id="downtimeEnd" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />
+                <b> App Configurations </b>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable Content Feedback
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="contentfeedback" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable Content Rating
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="contentrating" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable CRM Sign Up
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="crmsignup" />
+            </td>
+            <td align="left" class="tablealign">
+                <b>CRM Email:</b><input type="text" placeholder="CRM Email" id="crmsignup2" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable On-Site Content
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="onsitecontent" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable Help URL
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="helpurl" />
+            </td>
+            <td align="left" class="tablealign">
+                <b>FAQ URL:</b><input type="text" style="width:350px;" placeholder="FAQ URL (Open in In-App browser)" id="helpurl2" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />Enable Usage Data Collections
+            </td>
+            <td align="left" class="tablealign">
+                <input type="checkbox" id="usagedatacollections" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />
+                <b>API KEY #1:</b>
+            </td>
+            <td align="left" style="padding-left:50px;">
+                <br />
+                <input type="text" placeholder="API KEY #1" id="apikey1" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />
+                <b>API KEY #2:</b>
+            </td>
+            <td align="left" style="padding-left:50px;">
+                <br />
+                <input type="text" placeholder="API KEY #2" id="apikey2" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />
+                <b>GCM CONFIG : </b>
+            <td align="left" style="padding-left:50px;">
+                <br />
+                <input type="text" placeholder="GCM CONFIG" id="gcmconfig" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <br />
+                <b>APNS CONFIG : </b>
+            <td align="left" style="padding-left:50px;">
+                <br />
+                <input type="text" placeholder="APNS CONFIG" id="apnsconfig" />
+            </td>
+        </tr>
 
-</table>
+    </table>
+</form>
