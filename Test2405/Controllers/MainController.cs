@@ -22,14 +22,15 @@ namespace Test2405.Controllers
         }
 
         [HttpPost]
-        public ActionResult SubmitSettings(List<OptionModel> optionModelList)
+        public ActionResult SubmitSettings(List<OptionModel> optionModelList, string pageName)
         {
+            
             string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
             string DataLog = "";
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
             {
                 sqlCon.Open();
-                Console.WriteLine(optionModelList);
+                Console.WriteLine(pageName);
                 for ( var i = 0; i < optionModelList.Count(); i++ )
                 {
                     SqlCommand StrQuer = new SqlCommand("UPDATE [Option] SET option_value = @value WHERE option_name = @name", sqlCon);
@@ -48,9 +49,9 @@ namespace Test2405.Controllers
                     }
                     else if (optionModelList[i].OptionType == "calender")
                     {
-                        string dateTime2String = optionModelList[i].OptionValueDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffff");
-                        SqlParameter pValue = new SqlParameter("@value", dateTime2String);
-                        DataLog += "ID" + i + ":" + dateTime2String + ";";
+                        //string dateTime2String = optionModelList[i].OptionValueDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffff");
+                        SqlParameter pValue = new SqlParameter("@value", optionModelList[i].OptionValueDate);
+                        DataLog += "ID" + i + ":" + optionModelList[i].OptionValueDate + ";";
                         StrQuer.Parameters.Add(pValue);
                     }
                     SqlParameter pID = new SqlParameter("@name", optionModelList[i].OptionName);
@@ -62,7 +63,7 @@ namespace Test2405.Controllers
                 SqlCommand StrQuerLog = new SqlCommand("INSERT INTO [ChangeLog] (LogID,Time,LogData,Page) values(NEWID(),@time,@logdata,@page)", sqlCon);
                 SqlParameter pTime = new SqlParameter("@time", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
                 SqlParameter pDataLog = new SqlParameter("@logdata", DataLog);
-                SqlParameter pPage = new SqlParameter("@page", "ApplicationSettings");
+                SqlParameter pPage = new SqlParameter("@page", pageName);
                 StrQuerLog.Parameters.Add(pTime);
                 StrQuerLog.Parameters.Add(pDataLog);
                 StrQuerLog.Parameters.Add(pPage);
@@ -75,7 +76,7 @@ namespace Test2405.Controllers
             return RedirectToAction("ApplicationSettings", "Main");
         }
 
-        public ActionResult ApplicationSettings()
+        public List<OptionModel> retrieveOptionData(string pageName)
         {
             var OptionModelList = new List<OptionModel>();
             string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
@@ -84,10 +85,10 @@ namespace Test2405.Controllers
                 Console.WriteLine("Connected");
                 sqlCon.Open();
                 SqlCommand StrQuer = new SqlCommand("SELECT * FROM [Option] WHERE option_page = @Pagename", sqlCon);
-                SqlParameter pPagename = new SqlParameter("@Pagename", "ApplicationSettings");
+                SqlParameter pPagename = new SqlParameter("@Pagename", pageName);
                 StrQuer.Parameters.Add(pPagename);
                 SqlDataReader dr = StrQuer.ExecuteReader();
-                if ( dr.HasRows )
+                if (dr.HasRows)
                 {
                     while (dr.Read())
                     {
@@ -98,7 +99,7 @@ namespace Test2405.Controllers
                             OptionType = dr.GetString(2),
                             OptionValueString = null,
                             OptionValueBool = false,
-                            OptionValueDate = DateTime.MinValue
+                            OptionValueDate = null,
                         };
                         if (dr.GetString(2) == "boolean")
                         {
@@ -107,16 +108,31 @@ namespace Test2405.Controllers
                         else if (dr.GetString(2) == "string")
                             temp.OptionValueString = dr.GetString(3);
                         else if (dr.GetString(2) == "calender")
-                            temp.OptionValueDate = DateTime.Parse(dr.GetString(3));
+                        {
+                            DateTime tempTime = Convert.ToDateTime(dr.GetString(3)); 
+                            string timeString = tempTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                            temp.OptionValueDate = timeString;
+                        }
+                       
                         OptionModelList.Add(temp);
                     }
                 }
-                return View(OptionModelList);
+                dr.Close();
             }
+            return OptionModelList;
+        }
+
+        public ActionResult ApplicationSettings()
+        {
+            var OptionModelList = new List<OptionModel>();
+            OptionModelList = retrieveOptionData("ApplicationSettings");
+            return View(OptionModelList);
         }
         public IActionResult ApplicationUpdates()
         {
-            return View();
+            var OptionModelList = new List<OptionModel>();
+            OptionModelList = retrieveOptionData("ApplicationUpdates");
+            return View(OptionModelList);
         }
     }
 

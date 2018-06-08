@@ -1,56 +1,54 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<Test2405.Models.OptionModel>
 @{
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
 </br>
 
-<table>
-    <tr>
-        <td align="left">
-            <b> Asset Updates </b>
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br /> File
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="text" placeholder="Enter Text" id="file" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br /> Version
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="text" placeholder="Description" id="version" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br /> Size (Read Only)
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="text" placeholder="Size" id="file" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br /> Publish On
-        </td>
-        <td align="left" style="padding-top:20px;padding-left:50px;">
-            <input type="date" placeholder="Start" id="publish" />
-        </td>
-    </tr>
-    <tr>
-        <td align="left">
-            <br /> Update History
-        </td>
-    </tr>
-    <td align="left" style="padding-top:20px;padding-left:50px;">
-        <input type="text" placeholder="Start" id="history" />
-    </td>
-</table>
+
+@using (Html.BeginForm("SubmitSettings", "Main", new { pageName = "ApplicationUpdates" }, FormMethod.Post))
+{
+    <br />
+    <b>Settings</b>
+
+    <table>
+
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td align="left">
+                    @Html.DisplayFor(modelitem => Model[i].OptionName)
+                    @Html.HiddenFor(modelitem => Model[i].OptionName)
+                </td>
+                <td align="left" class="tablealign">
+                    @if (Model[i].OptionType == "string")
+                    {
+                        if (Model[i].OptionName != "Update History")
+                        {
+                            @Html.TextBoxFor(modelitem => Model[i].OptionValueString, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextAreaFor(modelitem => Model[i].OptionValueString, new { @class = "form-control" })
+                        }
+
+                    }
+                    else if (Model[i].OptionType == "calender")
+                    {
+                        @Html.TextBoxFor(modelitem => Model[i].OptionValueDate, new { @class = "form-control" })
+                    }
+
+                </td>
+            </tr>
+        }
+        
+        <tr>
+            <td></td>
+            <td align="right"><button type="submit" class="w3-button w3-green">Apply</button></td>
+            
+        </tr>
+    </table>
+}

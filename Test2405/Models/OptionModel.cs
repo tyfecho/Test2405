@@ -19,8 +19,7 @@ namespace Test2405.Models
         public string OptionType { get; set; }
         public string OptionValueString { get; set; }
         public Boolean OptionValueBool { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime OptionValueDate { get; set; }
+        public String OptionValueDate { get; set; }
     }
 
    /* public class UserData
