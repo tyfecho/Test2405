@@ -36,6 +36,11 @@ namespace Test2405.Controllers
             return View();
         }
 
+        public ActionResult Notifications_New()
+        {
+            return View();
+        }
+
         public ActionResult DeleteNotification(int id)
         {
             string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";

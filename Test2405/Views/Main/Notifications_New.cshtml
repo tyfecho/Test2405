@@ -5,12 +5,65 @@
 
 <br />
 
-<b style="text-align:center;">Notifications</b>
+<center><b style="text-align:center;">Notification</b></center>
 <br />
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save</button>
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save & Close</button>
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Cancel</button>
+<button type="submit" class="w3-button w3-red" style="float:right;border-radius:4px;">Delete</button>
 
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">+ New</button>
-
-@using (Html.BeginForm("", "Main", new { pageName = "Notifications" }, FormMethod.Post))
-{ 
+@using (Html.BeginForm("", "Main", new { pageName = "Notifications_New" }, FormMethod.Post))
+{
+    <br />
+    <table>
+        <tr>
+            <td align="left">
+                <b>Platform</b>
+            </td>
+            <td align="left" class="tablealign">
+                <label class="switch">
+                    @Html.CheckBox("APNS(iOS)", false)
+                    <span class="slider"></span>
+                </label>
+                APNS(iOS)
+            </td>
+            <td align="left" class="tablealign">
+                <label class="switch">
+                    @Html.CheckBox("GCM(Android)", false)
+                    <span class="slider"></span>
+                </label>
+                GCM(Android)
+            </td>
+            <td align="left" class="tablealign">
+                Status : New
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                @Html.TextBox("notification_icon", "Notification Icon", new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                @Html.TextBox("notification_msg", "Notification Message", new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                @Html.TextBox("action_activity", "Action/Activity on Launch", new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                @Html.TextBox("expiry", "Expiry", new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                @Html.TextBox("priority", "Priority", new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
+    
 
 }

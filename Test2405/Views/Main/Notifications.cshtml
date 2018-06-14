@@ -11,7 +11,7 @@
 
 <br />
 
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">+ New</button>
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;" onclick="@("window.location.href='" + @Url.Action("Notifications_New", "Main") + "'");">+ New</button>
 
 @using (Html.BeginForm("", "Main", new { pageName = "Notifications" }, FormMethod.Post))
 {
