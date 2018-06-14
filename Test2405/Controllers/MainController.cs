@@ -21,6 +21,76 @@ namespace Test2405.Controllers
             return View();
         }
 
+        public ActionResult ContentTemplates()
+        {
+            return View();
+        }
+
+        public ActionResult Contents()
+        {
+            return View();
+        }
+
+        public ActionResult ContentsChangeLog()
+        {
+            return View();
+        }
+
+        public ActionResult DeleteNotification(int id)
+        {
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand StrQuer = new SqlCommand("DELETE FROM [Notification] WHERE ID = @id", sqlCon);
+                SqlParameter pID = new SqlParameter("@id", Convert.ToString(id));
+                StrQuer.Parameters.Add(pID);
+                SqlDataReader dr = StrQuer.ExecuteReader();
+                dr.Close();
+                sqlCon.Close();
+            }
+            return RedirectToAction("Notifications", "Main");
+        }
+
+        public ActionResult Notifications()
+        {
+            var NotificationList = new List<NotificationModel>();
+            NotificationList = retrieveNotificationData("Notifications");
+            return View(NotificationList);
+        }
+
+        public List<NotificationModel> retrieveNotificationData(string pageName)
+        {
+            var NotificationModelList = new List<NotificationModel>();
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand StrQuer = new SqlCommand("SELECT * FROM [Notification]", sqlCon);
+               
+                SqlDataReader dr = StrQuer.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        NotificationModel temp = new NotificationModel()
+                        {
+                            NotificationID = dr.GetInt32(0),
+                            NotificationPosted = dr.GetString(1),
+                            NotificationPlatform = dr.GetString(2),
+                            NotificationMsg = dr.GetString(3),
+                            NotificationStatus = dr.GetString(4),
+                            NotificationBy = dr.GetString(5),
+                        };
+
+                        NotificationModelList.Add(temp);
+                    }
+                }
+                dr.Close();
+            }
+            return NotificationModelList;
+        }
+
         [HttpPost]
         public ActionResult SubmitSettings(List<OptionModel> optionModelList, string pageName)
         {

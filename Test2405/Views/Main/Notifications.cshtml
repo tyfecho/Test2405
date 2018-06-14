@@ -1,0 +1,75 @@
+﻿@model List<Test2405.Models.NotificationModel>
+@{
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<br />
+
+<center>
+    <b>Notifications</b>
+</center>
+
+<br />
+
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">+ New</button>
+
+@using (Html.BeginForm("", "Main", new { pageName = "Notifications" }, FormMethod.Post))
+{
+    <br />
+    <table style="border:1px solid #ddd;" cellspacing="0" cellpadding="2" width="800">
+        <tr style="background-color:#eaeaea;text-align:center;">
+            <td style="border-right:1px solid #ddd;">
+                ID
+            </td>
+            <td style="border-right:1px solid #ddd;">
+                Posted
+            </td>
+            <td style="border-right:1px solid #ddd;">
+                Platform
+            </td>
+            <td style="border-right:1px solid #ddd;">
+                Notifications
+            </td>
+            <td style="border-right:1px solid #ddd;">
+                Status
+            </td>
+            <td style="border-right:1px solid #ddd;">By</td>
+            <td style="border-right:1px solid #ddd;"></td>
+            <td style="border-right:1px solid #ddd;"></td>
+        </tr>
+
+        @for (var i = 0; i < Model.Count(); i++)
+        {
+        <tr style="text-align:center;">
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationPosted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationPlatform)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationMsg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => Model[i].NotificationBy)
+            </td>
+            <td>
+                <a href="@Url.Action("", "Main", new{ID = Model[i].NotificationID})">
+                    <img src="~/images/edit_icon.svg" width="25" height="25" />
+                </a>
+            </td>
+            <td>
+                <a href="@Url.Action("DeleteNotification", "Main", new {id = Model[i].NotificationID})">
+                    <img src="~/images/delete_icon.svg" width="25" height="25" />
+                </a>
+            </td>
+        </tr>
+        }
+    </table>
+}
