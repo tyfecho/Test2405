@@ -1,4 +1,17 @@
 ﻿@model List<Test2405.Models.NotificationModel>
+@section scripts {
+    <script type="text/javascript">
+    $("#up_file").click(function () {
+        $("#file_input").trigger('click');
+
+        });
+
+        function rewrite(value) {
+            filename = value.split('\\').pop().split('/').pop();
+            document.getElementById('notification_icon').value = filename;
+        }
+    </script>
+}
 @{
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
@@ -7,63 +20,86 @@
 
 <center><b style="text-align:center;">Notification</b></center>
 <br />
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save</button>
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save & Close</button>
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Cancel</button>
-<button type="submit" class="w3-button w3-red" style="float:right;border-radius:4px;">Delete</button>
 
 @using (Html.BeginForm("", "Main", new { pageName = "Notifications_New" }, FormMethod.Post))
 {
     <br />
     <table>
         <tr>
-            <td align="left">
-                <b>Platform</b>
-            </td>
             <td align="left" class="tablealign">
-                <label class="switch">
-                    @Html.CheckBox("APNS(iOS)", false)
-                    <span class="slider"></span>
-                </label>
-                APNS(iOS)
+                <button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save</button>
+                <button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Save & Close</button>
+                <button type="submit" class="w3-button w3-blue" style="border-radius:4px;">Cancel</button>
+            </td>
+            <td align="right" class="tablealign">
+                <button type="submit" class="w3-button w3-red" style="border-radius:4px;">Delete</button>
+            </td>
+        </tr>
+        <tr>
+            <td align="left" class="tablealign">
+                
+                
+                <div style="position:relative;">
+                    <b style="position:absolute;">Platform</b>
+
+                    <label class="switch" style="left:100px;">
+                        @Html.CheckBox("APNS(iOS)", false)
+                        <span class="slider"></span>
+                    </label>
+                    <i style="padding-left:6.75em;">APNS(iOS)</i>
+                </div>
             </td>
             <td align="left" class="tablealign">
                 <label class="switch">
                     @Html.CheckBox("GCM(Android)", false)
                     <span class="slider"></span>
                 </label>
-                GCM(Android)
+                <i>GCM(Android)</i>
+                <b style="padding-left:2em;">Status :</b> New
             </td>
+        </tr>
+        <tr>
+            <td></td>
             <td align="left" class="tablealign">
-                Status : New
+                <div style="position:relative;">
+                    <b style="position:absolute;"> Send On :</b>
+                    @Html.TextBox("sendOn", "", new { @class = "form-control", @placeholder="Send On", @style = "width:200px; position:relative; left:100px;", type = "datetime-local" })
+
+                </div>
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextBox("notification_icon", "Notification Icon", new { @class = "form-control" })
+                <div style="position:relative;display:inline-block">
+                    @Html.TextBox("notification_icon", "", new { @placeholder = "Notification Icon", @class = "form-control", @style = "width:250px; position:absolute;" })
+
+                    <img id="up_file" src="~/images/paperclip_icon.svg" width="35" height="35" style="cursor:pointer;position:relative;left:250px;" />
+
+                    <input type="file" id="file_input" name="file_input" style="display:none;" onchange="rewrite(this.value)" />
+
+                </div>
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextBox("notification_msg", "Notification Message", new { @class = "form-control" })
+                @Html.TextBox("notification_msg", "", new { @placeholder = "Notification Message", @class = "form-control", @style = "width:400px;" })
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextBox("action_activity", "Action/Activity on Launch", new { @class = "form-control" })
+                @Html.TextBox("action_activity", "", new { @placeholder = "Action/Activity on Launch", @class = "form-control", @style = "width:250px;" })
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextBox("expiry", "Expiry", new { @class = "form-control" })
+                <b>Expiry :</b>
+                @Html.TextBox("expiry", "", new { @placeholder = "Expiry", @class = "form-control", @style = "width:200px;", type = "datetime-local" })
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextBox("priority", "Priority", new { @class = "form-control" })
+                @Html.TextBox("priority", "", new { @placeholder = "Priority", @class = "form-control", @style = "width:250px;" })
             </td>
         </tr>
     </table>
-    
-
 }
