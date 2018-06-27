@@ -38,6 +38,7 @@ namespace Test2405.Controllers
                     //userModel.Username == "admin" && userModel.Password == "pass"
                     sqlCon.Close();
                     dr.Close();
+                    HttpContext.Session.Set("Username",System.Text.Encoding.Unicode.GetBytes(userModel.Username));
                     return RedirectToAction("Index", "Main");
                 }
                 else
@@ -47,6 +48,12 @@ namespace Test2405.Controllers
                     return View("Index", userModel);
                 }
             }
+        }
+
+        public ActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return View();
         }
 
         public string Welcome(string name, int numTimes = 1)

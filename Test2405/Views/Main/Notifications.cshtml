@@ -16,13 +16,11 @@
 @using (Html.BeginForm("", "Main", new { pageName = "Notifications" }, FormMethod.Post))
 {
     <br />
-    <table style="border:1px solid #ddd;" cellspacing="0" cellpadding="2" width="800">
+    <table style="border:1px solid #ddd;" cellspacing="0" cellpadding="2" width="1080">
         <tr style="background-color:#eaeaea;text-align:center;">
+            
             <td style="border-right:1px solid #ddd;">
-                ID
-            </td>
-            <td style="border-right:1px solid #ddd;">
-                Posted
+                Created On
             </td>
             <td style="border-right:1px solid #ddd;">
                 Platform
@@ -41,11 +39,9 @@
         @for (var i = 0; i < Model.Count(); i++)
         {
         <tr style="text-align:center;">
+            
             <td>
-                @Html.DisplayFor(modelitem => Model[i].NotificationID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelitem => Model[i].NotificationPosted)
+                @Html.DisplayFor(modelitem => Model[i].NotificationCreatedOn)
             </td>
             <td>
                 @Html.DisplayFor(modelitem => Model[i].NotificationPlatform)
@@ -60,7 +56,7 @@
                 @Html.DisplayFor(modelitem => Model[i].NotificationBy)
             </td>
             <td>
-                <a href="@Url.Action("", "Main", new{ID = Model[i].NotificationID})">
+                <a href="@Url.Action("Notifications_Edit", "Main", new{ID = Model[i].NotificationID})">
                     <img src="~/images/edit_icon.svg" width="25" height="25" />
                 </a>
             </td>

@@ -17,18 +17,37 @@ namespace Test2405.Models
 
     public class NotificationModel
     {
-        public int NotificationID { get; set; }
-        public string NotificationPosted { get; set; }
+        public Guid NotificationID { get; set; }
         [DisplayName("Platform")]
         public string NotificationPlatform { get; set; }
+        [DisplayName("Notification Icon")]
+        public string NotificationIcon { get; set; }
         [DisplayName("Notification Message")]
         public string NotificationMsg { get; set; }
         [DisplayName("Status")]
         public string NotificationStatus { get; set; }
         [DisplayName("Notification By")]
         public string NotificationBy { get; set; }
-
+        [DisplayName("Expiry")]
+        public string NotificationExpiry { get; set; }
+        [DisplayName("Action/Activity")]
+        public string NotificationActionActivity { get; set; }
+        [DisplayName("Priority")]
+        public string NotificationPriority { get; set; }
+        [DisplayName("Send On")]
+        public string NotificationSendOn { get; set; }
+        [DisplayName("Created On")]
+        public string NotificationCreatedOn { get; set; }
+        [DisplayName("Announcement Type")]
+        public AnnouncementType announcementType { get; set; }
         //public string 
+    }
+
+    public enum AnnouncementType
+    {
+        Type1,
+        Type2,
+        Type3
     }
 
    /* public class UserData
