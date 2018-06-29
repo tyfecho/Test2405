@@ -1,4 +1,4 @@
-﻿@model Test2405.Models.NotificationModel
+﻿@model Test2405.Models.AnnouncementModel
 @{
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
@@ -8,7 +8,7 @@
 <center><b style="text-align:center;">App Announcements</b></center>
 <br />
 
-@using (Html.BeginForm("", "Main", FormMethod.Post))
+@using (Html.BeginForm("SaveAnnouncement", "Main", FormMethod.Post))
 {
     <br />
     <table>
@@ -36,7 +36,7 @@
             <td align="left" class="tablealign">
                 <div style="position:relative;">
                     <b style="position:absolute;"> Send On :</b>
-                    @Html.TextBoxFor(m => Model.NotificationSendOn, new { @class = "form-control", @placeholder = "Send On", @style = "width:200px; position:relative; left:100px;", type = "datetime-local" })
+                    @Html.TextBoxFor(m => Model.AnnouncementSendOn, new { @class = "form-control", @placeholder = "Send On", @style = "width:200px; position:relative; left:100px;", type = "datetime-local" })
                 </div>
             </td>
         </tr>
@@ -47,20 +47,20 @@
             <td align="left" class="tablealign">
                 <div style="position:relative;">
                     <b style="position:absolute;"> Stop On :</b>
-                    @Html.TextBoxFor(m => Model.NotificationExpiry, new { @class = "form-control", @placeholder = "Stop On", @style = "width:200px; position:relative; left:100px;", type = "datetime-local" })
+                    @Html.TextBoxFor(m => Model.AnnouncementStopOn, new { @class = "form-control", @placeholder = "Stop On", @style = "width:200px; position:relative; left:100px;", type = "datetime-local" })
 
                 </div>
             </td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.DropDownListFor(m => Model.announcementType, new SelectList(Enum.GetValues(typeof(AnnouncementType))), "Announcement Type", new { @class = "form-control", @style = "width:300px;" })
+                @Html.DropDownListFor(m => Model.AnnouncementType, new SelectList(Enum.GetValues(typeof(AnnouncementType))), "Announcement Type", new { @class = "form-control", @style = "width:300px;" })
             </td>
             <td></td>
         </tr>
         <tr>
             <td align="left" class="tablealign">
-                @Html.TextAreaFor(m => Model.NotificationSendOn, new { @class = "form-control", @placeholder = "Announcement Message", @style = "width:400px;" })
+                @Html.TextAreaFor(m => Model.AnnouncementMessage, new { @class = "form-control", @placeholder = "Announcement Message", @style = "width:400px;" })
             </td>
             <td></td>
         </tr>

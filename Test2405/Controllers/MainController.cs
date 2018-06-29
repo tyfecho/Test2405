@@ -151,6 +151,48 @@ namespace Test2405.Controllers
             else return RedirectToAction("Index", "Main");
         }
 
+        public ActionResult SaveAnnouncement(AnnouncementModel announcementModel)
+        {
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand StrQuer = new SqlCommand("INSERT INTO [Announcement] (ID,created_On,send_On,stop_On,Status,Type,Message,updated_On,posted_By)" +
+                                                        "values(NEWID(),@createdOn,@sendOn,@stopOn,@status,@type,@message,@updatedOn,@postedBy)", sqlCon);
+                SqlParameter pCreatedOn = new SqlParameter("@createdOn", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
+                SqlParameter pSendOn = new SqlParameter("@sendOn",announcementModel.AnnouncementSendOn);
+                SqlParameter pStopOn = new SqlParameter("@stopOn", announcementModel.AnnouncementStopOn);
+                SqlParameter pStatus = new SqlParameter("@status", "new");
+                SqlParameter pType = new SqlParameter("@type", announcementModel.AnnouncementType);
+                SqlParameter pMessage = new SqlParameter("@message", announcementModel.AnnouncementMessage);
+                SqlParameter pUpdatedOn = new SqlParameter("@updatedOn", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
+
+                var tmp = new Byte[20];
+                HttpContext.Session.TryGetValue("Username", out tmp);
+                SqlParameter postedBy = new SqlParameter("@postedBy", System.Text.Encoding.UTF8.GetString(tmp));
+
+                StrQuer.Parameters.Add(pCreatedOn);
+                StrQuer.Parameters.Add(pSendOn);
+                StrQuer.Parameters.Add(pStopOn);
+                StrQuer.Parameters.Add(pStatus);
+                StrQuer.Parameters.Add(pType);
+                StrQuer.Parameters.Add(pMessage);
+                StrQuer.Parameters.Add(pUpdatedOn);
+                StrQuer.Parameters.Add(postedBy);
+
+
+                SqlDataReader dr = StrQuer.ExecuteReader();
+                dr.Close();
+                sqlCon.Close();
+            }
+            return RedirectToAction("Announcements_Logs", "Main");
+        }
+
+        /*public List<AnnouncementModel> retrieveAnnouncementData()
+        {
+
+        }*/
+
         public ActionResult Notifications_Edit(Guid id)
         {
             if (SessionCheck())
