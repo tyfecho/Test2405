@@ -131,10 +131,10 @@ namespace Test2405.Controllers
         {
             if (SessionCheck())
             {
-                var NotificationList = new List<NotificationModel>();
-                NotificationList = retrieveNotificationData("Announcements_Logs");
+                var announcementList = new List<AnnouncementModel>();
+                announcementList = retrieveAnnouncementData();
 
-                return View(NotificationList);
+                return View(announcementList);
             }
             else return RedirectToAction("Index", "Main");
         }
@@ -188,10 +188,40 @@ namespace Test2405.Controllers
             return RedirectToAction("Announcements_Logs", "Main");
         }
 
-        /*public List<AnnouncementModel> retrieveAnnouncementData()
+        public List<AnnouncementModel> retrieveAnnouncementData()
         {
+            var AnnouncementModelList = new List<AnnouncementModel>();
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand StrQuer = new SqlCommand("SELECT * FROM [Announcement]", sqlCon);
 
-        }*/
+                SqlDataReader dr = StrQuer.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        AnnouncementModel temp = new AnnouncementModel()
+                        {
+                            AnnouncementID = dr.GetGuid(0),
+                            AnnouncementCreatedOn = dr.GetString(1),
+                            AnnouncementSendOn = dr.GetString(2),
+                            AnnouncementStopOn = dr.GetString(3),
+                            AnnouncementStatus = dr.GetString(4),
+                            AnnouncementType = (AnnouncementType)Convert.ToInt16(dr.GetString(5)),
+                            AnnouncementMessage = dr.GetString(6),
+                            AnnouncementBy = dr.GetString(8)
+                        };
+
+                        temp.AnnouncementBy = temp.AnnouncementBy.Replace("\0", "");
+                        AnnouncementModelList.Add(temp);
+                    }
+                }
+                dr.Close();
+            }
+            return AnnouncementModelList;
+        }
 
         public ActionResult Notifications_Edit(Guid id)
         {

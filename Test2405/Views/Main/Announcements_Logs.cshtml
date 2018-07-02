@@ -1,4 +1,4 @@
-﻿@model List<Test2405.Models.NotificationModel>
+﻿@model List<Test2405.Models.AnnouncementModel>
 @{
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
@@ -11,12 +11,15 @@
 
 <br />
 
-<div align="right" style="padding-right:10em;position:relative;display:inline-block;">
-    <img id="up_file" src="~/images/search_icon.svg" width="25" height="25" style="margin-top:1%;left:60%;cursor:pointer;position:absolute;" />
-    @Html.TextBox("Search", "", new { @placeholder = "Search", @class = "form-control", @style = "width:200px;" })
+<div align="right">
+    <div style="padding-right:10em;position:relative;display:inline-block;">
+        <img id="up_file" src="~/images/search_icon.svg" width="25" height="25" style="margin-top:1%;left:60%;cursor:pointer;position:absolute;" />
+        @Html.TextBox("Search", "", new { @placeholder = "Search", @class = "form-control", @style = "width:200px;" })
 
-    <input type="file" id="file_input" name="file_input" style="display:none;" onchange="rewrite(this.value)" />
+        <input type="file" id="file_input" name="file_input" style="display:none;" onchange="rewrite(this.value)" />
+    </div>
 </div>
+
 
 @using (Html.BeginForm("", "Main", new { pageName = "" }, FormMethod.Post))
 {
@@ -25,10 +28,10 @@
         <tr style="background-color:#eaeaea;text-align:center;">
 
             <td style="border-right:1px solid #ddd;">
-                Posted On
+                Created On
             </td>
             <td style="border-right:1px solid #ddd;">
-                Platform
+                Send On
             </td>
             <td style="border-right:1px solid #ddd;">
                 Notifications
@@ -45,22 +48,22 @@
             <tr style="text-align:center;">
 
                 <td>
-                    @Html.DisplayFor(modelitem => Model[i].NotificationSendOn)
+                    @Html.DisplayFor(modelitem => Model[i].AnnouncementCreatedOn)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelitem => Model[i].NotificationPlatform)
+                    @Html.DisplayFor(modelitem => Model[i].AnnouncementSendOn)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelitem => Model[i].NotificationMsg)
+                    @Html.DisplayFor(modelitem => Model[i].AnnouncementMessage)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelitem => Model[i].NotificationStatus)
+                    @Html.DisplayFor(modelitem => Model[i].AnnouncementStatus)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelitem => Model[i].NotificationBy)
+                    @Html.DisplayFor(modelitem => Model[i].AnnouncementBy)
                 </td>
                 <td>
-                    <a href="@Url.Action("", "Main", new { ID = Model[i].NotificationID })">
+                    <a href="@Url.Action("", "Main", new { ID = Model[i].AnnouncementID })">
                         <img src="~/images/paper_icon.svg" width="25" height="25" />
                     </a>
                 </td>

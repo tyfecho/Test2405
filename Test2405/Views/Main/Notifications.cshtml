@@ -11,12 +11,24 @@
 
 <br />
 
-<button type="submit" class="w3-button w3-blue" style="border-radius:4px;" onclick="@("window.location.href='" + @Url.Action("Notifications_New", "Main") + "'");">+ New</button>
+<button type="submit" class="w3-button w3-blue" style="border-radius:4px;float:left;" onclick="@("window.location.href='" + @Url.Action("Notifications_New", "Main") + "'");">+ New</button>
+
+<div style="float:right;">
+
+    <div style="padding-right:10em;position:relative;display:inline-block;">
+        <img id="up_file" src="~/images/search_icon.svg" width="25" height="25" style="margin-top:1%;left:60%;cursor:pointer;position:absolute;" />
+        @Html.TextBox("Search", "", new { @placeholder = "Search", @class = "form-control", @style = "width:200px;" })
+
+        <input type="file" id="file_input" name="file_input" style="display:none;" onchange="rewrite(this.value)" />
+    </div>
+</div>
+
+<br />
 
 @using (Html.BeginForm("", "Main", new { pageName = "Notifications" }, FormMethod.Post))
 {
     <br />
-    <table style="border:1px solid #ddd;" cellspacing="0" cellpadding="2" width="1080">
+    <table style="border:1px solid #ddd;" cellspacing="0" cellpadding="2" width="100%">
         <tr style="background-color:#eaeaea;text-align:center;">
             
             <td style="border-right:1px solid #ddd;">
