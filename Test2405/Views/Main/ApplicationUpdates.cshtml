@@ -1,7 +1,22 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<Test2405.Models.OptionModel>
+
+@section scripts {
+    <script type="text/javascript">
+        $("#up_file").click(function () {
+            $("#file_input").trigger('click');
+
+        });
+
+        function rewrite(value) {
+            filename = value.split('\\').pop().split('/').pop();
+            document.getElementById("z0__CombinedFile").value = filename;
+        }
+    </script>
+}
+
+@model List<Test2405.Models.CombinedOptionModel>
 @{
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
@@ -9,45 +24,158 @@
 </br>
 
 
-@using (Html.BeginForm("SubmitSettings", "Main", new { pageName = "ApplicationUpdates" }, FormMethod.Post))
+@using (Html.BeginForm("SubmitUpdates", "Main", new { pageName = "ApplicationUpdates" }, FormMethod.Post))
 {
-    <b>Settings</b>
 
-    <table>
+    <div style="border:2px solid black;padding-left:5px;width:90%;">
+        <b>News Asset Updates</b>
 
-        @for (var i = 0; i < Model.Count(); i++)
-        {
+        <table>
             <tr>
                 <td align="left">
-                    @Html.DisplayFor(modelitem => Model[i].OptionName)
-                    @Html.HiddenFor(modelitem => Model[i].OptionName)
+                    @Html.LabelFor(modelitem => Model[0].CombinedFile) :
                 </td>
                 <td align="left" class="tablealign">
-                    @if (Model[i].OptionType == "string")
-                    {
-                        if (Model[i].OptionName != "Update History")
-                        {
-                            @Html.TextBoxFor(modelitem => Model[i].OptionValueString, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextAreaFor(modelitem => Model[i].OptionValueString, new { @class = "form-control" })
-                        }
-
-                    }
-                    else if (Model[i].OptionType == "calender")
-                    {
-                        @Html.TextBoxFor(modelitem => Model[i].OptionValueDate, new { @class = "form-control" })
-                    }
-
+                    <div style="position:relative;">
+                        @Html.TextBoxFor(modelitem => Model[0].CombinedFile, new { @class = "form-control" })
+                        <img id="up_file" src="~/images/paperclip_icon.svg" width="35" height="35" style="cursor:pointer;position:absolute;display:inline-block;left:100%;top:-1%;" />
+                        <input type="file" id="file_input" name="file_input" style="display:none;" onchange="rewrite(this.value)" />
+                    </div>
                 </td>
             </tr>
-        }
-        
-        <tr>
-            <td></td>
-            <td align="right"><button type="submit" class="w3-button w3-green">Apply</button></td>
-            
-        </tr>
-    </table>
+            <tr>
+                <td align="left">
+                    @Html.LabelFor(modelitem => Model[0].CombinedVersion) :
+                </td>
+                <td align="left" class="tablealign">
+                    @Html.TextBoxFor(modelitem => Model[0].CombinedVersion, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    @Html.LabelFor(modelitem => Model[0].CombinedDescription) :
+                </td>
+                <td align="left" class="tablealign">
+                    @Html.TextAreaFor(modelitem => Model[0].CombinedDescription, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    @Html.LabelFor(modelitem => Model[0].CombinedSize) :
+                </td>
+                <td align="left" class="tablealign">
+                    @Html.TextBoxFor(modelitem => Model[0].CombinedSize, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    @Html.LabelFor(modelitem => Model[0].CombinedPublishedOn) :
+                </td>
+                <td align="left" class="tablealign">
+                    @Html.TextBoxFor(modelitem => Model[0].CombinedPublishedOn, new { @class = "form-control", type = "datetime-local" })
+                </td>
+            </tr>
+
+
+            <tr>
+                <td></td>
+                <td align="right"><button type="submit" class="w3-button w3-green">Apply</button></td>
+
+            </tr>
+        </table>
+
+    </div>
+
+    <b> Active Update </b>
+
+    <div style="border:2px solid black;padding-left:0px;width:90%;">
+
+        <table width="100%">
+            <tr style="background-color:#eaeaea;text-align:center;">
+                <td style="border-right:1px solid #ddd;">
+                    File
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Version
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Change Description
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Size
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Publish On
+                </td>
+            </tr>
+            <tr style="text-align:center;">
+                <td>
+                    @Html.DisplayFor(modelitem => Model[0].CombinedFile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => Model[0].CombinedVersion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => Model[0].CombinedDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => Model[0].CombinedSize )
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => Model[0].CombinedPublishedOn)
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <b> Active History </b>
+
+    <div style="border:2px solid black;padding-left:0px;width:90%;">
+
+        <table width="100%">
+            <tr style="background-color:#eaeaea;text-align:center;">
+                <td style="border-right:1px solid #ddd;">
+                    File
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Version
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Change Description
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Size
+                </td>
+                <td style="border-right:1px solid #ddd;">
+                    Publish On
+                </td>
+            </tr>
+            @for (var i = 1; i < Model.Count; i++)
+            {
+                <tr style="text-align:center;">
+                    <td>
+                        @Html.DisplayFor(modelitem => Model[i].CombinedFile)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => Model[i].CombinedVersion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => Model[i].CombinedDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => Model[i].CombinedSize)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => Model[i].CombinedPublishedOn)
+                    </td>
+                </tr>
+            }
+
+
+        </table>
+    </div>
+
+
+
 }

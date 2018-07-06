@@ -169,7 +169,9 @@ namespace Test2405.Controllers
 
                 var tmp = new Byte[20];
                 HttpContext.Session.TryGetValue("Username", out tmp);
-                SqlParameter postedBy = new SqlParameter("@postedBy", System.Text.Encoding.UTF8.GetString(tmp));
+                string name = System.Text.Encoding.UTF8.GetString(tmp);
+                name = name.Replace("\0", "");
+                SqlParameter postedBy = new SqlParameter("@postedBy", name);
 
                 StrQuer.Parameters.Add(pCreatedOn);
                 StrQuer.Parameters.Add(pSendOn);
@@ -214,7 +216,7 @@ namespace Test2405.Controllers
                             AnnouncementBy = dr.GetString(8)
                         };
 
-                        temp.AnnouncementBy = temp.AnnouncementBy.Replace("\0", "");
+                        //temp.AnnouncementBy = temp.AnnouncementBy.Replace("\0", "");
                         AnnouncementModelList.Add(temp);
                     }
                 }
@@ -318,7 +320,73 @@ namespace Test2405.Controllers
                 sqlCon.Close();
 
             }
-            return RedirectToAction("ApplicationSettings", "Main");
+            return RedirectToAction(pageName, "Main");
+        }
+
+
+
+        [HttpPost]
+        public ActionResult SubmitUpdates(List<CombinedOptionModel> combinedOptionModel, string pageName)
+        {
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            string DataLog = "";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+               
+
+                for (var i = 0; i < 5; i++)
+                {
+                    SqlCommand StrQuer = new SqlCommand("UPDATE [Option] SET option_value = @value WHERE option_name = @name", sqlCon);
+
+                    String valString = "";
+                    String optionName = "";
+                    if (i == 0) {
+                        optionName = "File";
+                        valString = combinedOptionModel[0].CombinedFile;
+                    }
+                    else if (i == 1) {
+                        optionName = "Version";
+                        valString = combinedOptionModel[0].CombinedVersion;
+                    }
+                    else if (i == 2) {
+                        optionName = "Change Description";
+                        valString = combinedOptionModel[0].CombinedDescription;
+                    }
+                    else if (i == 3) {
+                        optionName = "Size";
+                        valString = combinedOptionModel[0].CombinedSize;
+                    }
+                    else if (i == 4) {
+                        optionName = "Publish On";
+                        valString = combinedOptionModel[0].CombinedPublishedOn;
+                    }
+
+                    SqlParameter pValue = new SqlParameter("@value", valString);
+                    DataLog += "ID" + i + ":" + valString + ";";
+                    StrQuer.Parameters.Add(pValue);
+                    
+                   
+                    SqlParameter pName = new SqlParameter("@name", optionName);
+                    StrQuer.Parameters.Add(pName);
+                    SqlDataReader dr = StrQuer.ExecuteReader();
+                    dr.Close();
+                }
+                //  Key in LogData into ChangeLog
+                SqlCommand StrQuerLog = new SqlCommand("INSERT INTO [ChangeLog] (LogID,Time,LogData,Page) values(NEWID(),@time,@logdata,@page)", sqlCon);
+                SqlParameter pTime = new SqlParameter("@time", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffffff"));
+                SqlParameter pDataLog = new SqlParameter("@logdata", DataLog);
+                SqlParameter pPage = new SqlParameter("@page", pageName);
+                StrQuerLog.Parameters.Add(pTime);
+                StrQuerLog.Parameters.Add(pDataLog);
+                StrQuerLog.Parameters.Add(pPage);
+                SqlDataReader dr2 = StrQuerLog.ExecuteReader();
+                dr2.Close();
+
+                sqlCon.Close();
+
+            }
+            return RedirectToAction(pageName, "Main");
         }
 
         public List<OptionModel> retrieveOptionData(string pageName)
@@ -382,8 +450,22 @@ namespace Test2405.Controllers
             if (SessionCheck())
             {
                 var OptionModelList = new List<OptionModel>();
+                var combinedModelList = new List<CombinedOptionModel>();
                 OptionModelList = retrieveOptionData("ApplicationUpdates");
-                return View(OptionModelList);
+
+                CombinedOptionModel combinedOptionModel = new CombinedOptionModel()
+                {
+                    CombinedFile = OptionModelList[0].OptionValueString,
+                    CombinedVersion = OptionModelList[1].OptionValueString,
+                    CombinedDescription = OptionModelList[2].OptionValueString,
+                    CombinedSize = OptionModelList[3].OptionValueString,
+                    CombinedPublishedOn = OptionModelList[4].OptionValueDate
+                };
+
+
+                combinedModelList = retrieveChangeLog("ApplicationUpdates");
+                combinedModelList.Insert(0, combinedOptionModel);
+                return View(combinedModelList);
             }
             else return RedirectToAction("Index", "Main");
         }
@@ -407,7 +489,13 @@ namespace Test2405.Controllers
                 SqlParameter pNotificationPlatform = new SqlParameter("@platform", platformString);
                 SqlParameter pNotificationMsg = new SqlParameter("@message", notificationModel.NotificationMsg);
                 SqlParameter pNotificationStatus = new SqlParameter("@status", "new");
-                SqlParameter pNotificationPostedBy = new SqlParameter("@postedby", "admin");
+
+                var tmp = new Byte[20];
+                HttpContext.Session.TryGetValue("Username", out tmp);
+                string name = System.Text.Encoding.UTF8.GetString(tmp);
+                name = name.Replace("\0", "");
+                SqlParameter pNotificationPostedBy = new SqlParameter("@postedby", name);
+
                 SqlParameter pNotificationActionActivity = new SqlParameter("@action_activity", notificationModel.NotificationActionActivity);
                 SqlParameter pNotificationExpiry = new SqlParameter("@expiry",notificationModel.NotificationExpiry);
                 SqlParameter pNotificationPriority = new SqlParameter("@priority", notificationModel.NotificationPriority);
@@ -431,6 +519,47 @@ namespace Test2405.Controllers
 
             }
             return RedirectToAction("Notifications", "Main");
+        }
+
+        public List<CombinedOptionModel> retrieveChangeLog(string pageName)
+        {
+            List<CombinedOptionModel> combinedOptionModelsList = new List<CombinedOptionModel>();
+
+            string connectionString = @"Data Source = localhost; Initial Catalog = LoginDatabase; Integrated Security = True;";
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand StrQuer = new SqlCommand("SELECT * FROM [ChangeLog] WHERE Page = @Pagename", sqlCon);
+                SqlParameter pPagename = new SqlParameter("@Pagename", pageName);
+                StrQuer.Parameters.Add(pPagename);
+                SqlDataReader dr = StrQuer.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        String ChangeLog = dr.GetString(2);
+                        //  Get Array of strings, split by ;
+                        String[] arrayString = ChangeLog.Split(';');
+
+                        //temp.AnnouncementBy = temp.AnnouncementBy.Replace("\0", "");
+
+                        CombinedOptionModel combinedOptionModel = new CombinedOptionModel()
+                        {
+                            CombinedFile = arrayString[0].Replace("ID0:",""),
+                            CombinedVersion = arrayString[1].Replace("ID1:", ""),
+                            CombinedDescription = arrayString[2].Replace("ID2:", ""),
+                            CombinedSize = arrayString[3].Replace("ID3:", ""),
+                            CombinedPublishedOn = arrayString[4].Replace("ID4:", ""),
+                        };
+
+                        combinedOptionModelsList.Add(combinedOptionModel);
+
+                    }
+                }
+                dr.Close();
+            }
+
+            return combinedOptionModelsList;
         }
 
         public NotificationModel retrieveNotificationSingular(Guid pID)
